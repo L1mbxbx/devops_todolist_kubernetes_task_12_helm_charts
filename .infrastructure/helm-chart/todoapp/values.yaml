@@ -1,0 +1,33 @@
+common:
+  namespace: todoapp
+
+todoapp:
+  image:
+    name: todoapp
+    repository: ikulyk404/todoapp
+    version: 4.0.1
+
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 1
+
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "150m"
+    limits:
+      memory: "256Mi"
+      cpu: "150m"
+
+  hpa:
+    minReplicas: 2
+    maxReplicas: 5
+    cpu:
+      averageUtilization: 70
+    memory:
+      averageUtilization: 70
+
+  affinity:
+    key: app
+    values:
+      - todoapp
