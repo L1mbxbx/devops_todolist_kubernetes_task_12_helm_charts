@@ -46,4 +46,4 @@ todoapp:
     requests:
       storage: 1Gi
 
-  serviceAccountName: secret-reader
+serviceAccountName: secret-reader
