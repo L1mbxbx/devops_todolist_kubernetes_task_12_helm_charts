@@ -7,8 +7,8 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: {{ .Values.todoapp.rollingUpdate.maxSurge }}
-      maxUnavailable: {{ .Values.todoapp.rollingUpdate.maxUnavailable }}
+      maxSurge: 1
+      maxUnavailable: 1
   selector:
     matchLabels:
       app: todoapp
@@ -19,8 +19,8 @@ spec:
     spec:
       serviceAccountName: secrets-reader
       containers:
-      - name: {{ .Values.todoapp.image.name }}
-        image: {{ .Values.todoapp.image.repository }}:{{ .Values.todoapp.image.version }}
+      - name: todoapp
+        image: ikulyk404/todoapp:4.0.1
         volumeMounts:
         - name: data
           mountPath: /app/data
@@ -32,11 +32,11 @@ spec:
           readOnly: true
         resources:
           requests:
-            memory: {{ .Values.todoapp.resources.requests.memory }}
-            cpu:  {{ .Values.todoapp.resources.requests.cpu }}
+            memory: "256Mi"
+            cpu: "150m"
           limits:
-            memory:  {{ .Values.todoapp.resources.limits.memory }}
-            cpu:  {{ .Values.todoapp.resources.limits.cpu }}
+            memory: "256Mi"
+            cpu: "150m"
         env:
         - name: PYTHONUNBUFFERED
           valueFrom:
@@ -98,6 +98,7 @@ spec:
           - weight: 1
             preference:
               matchExpressions:
-              - key: {{ .Values.todoapp.affinity.key }}
+              - key: app
                 operator: In
-                values: {{ .Values.todoapp.affinity.values }}
+                values:
+                - kube2py
